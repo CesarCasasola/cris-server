@@ -9,11 +9,12 @@ services:
     depends_on:
       - postgres
   postgres:
-    image: postgres:11-bookworm
+    image: postgres:11
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=a2b4c6
+      - POSTGRES_PASSWORD=s0m3p4ssw0rd
     ports:
       - '5432:5432'
     volumes:
       - ./docker/backend/postgresql/postgres-data:/var/lib/postgresql/data
+      - './docker/backend/postgresql/init:/docker-entrypoint-initdb.d'

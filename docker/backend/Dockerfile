@@ -39,4 +39,12 @@ ENV PATH $CATALINA_HOME/bin:$PATH
 # Exponer el puerto 8080 para acceder a Tomcat
 EXPOSE 8080
 
+#Instalación de git
+RUN apt-get update
+RUN apt-get install -y git
+
+
+
+
+#Ejecucion de tomcat como proceso principal de la imagen
 CMD ["/opt/tomcat/apache-tomcat-9.0.76/bin/catalina.sh", "run"]
