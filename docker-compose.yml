@@ -1,13 +1,5 @@
 version: '3'
-services:
-  cris-web-server:
-    build:
-      context: ./docker/backend
-      dockerfile: Dockerfile
-    ports:
-      - '8080:8080'  
-    depends_on:
-      - postgres
+services:  
   postgres:
     image: postgres:11
     environment:
@@ -17,4 +9,15 @@ services:
       - '5432:5432'
     volumes:
       - ./docker/backend/postgresql/postgres-data:/var/lib/postgresql/data
-      - './docker/backend/postgresql/init:/docker-entrypoint-initdb.d'
+      - ./docker/backend/postgresql/init:/docker-entrypoint-initdb.d
+      - ./docker/backend/postgresql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+  cris-web-server:
+    build:
+      context: ./docker/backend
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'  
+    depends_on:
+      - postgres
+    links:
+      - postgres
