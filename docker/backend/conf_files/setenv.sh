@@ -1,0 +1,1 @@
+CATALINA_OPTS="-Djava.awt.headless=true -Xmx2048m -Xms1024m -Dfile.encoding=UTF-8"

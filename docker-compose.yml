@@ -1,23 +1,26 @@
 version: '3'
 services:  
-  postgres:
-    image: postgres:11
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=s0m3p4ssw0rd
-    ports:
-      - '5432:5432'
-    volumes:
-      - ./docker/backend/postgresql/postgres-data:/var/lib/postgresql/data
-      - ./docker/backend/postgresql/init:/docker-entrypoint-initdb.d
-      - ./docker/backend/postgresql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+  # postgres:
+  #   image: postgres:11
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=s0m3p4ssw0rd
+  #   ports:
+  #     - '5432:5432'
+  #   volumes:
+  #     - ./docker/backend/postgresql/postgres-data:/var/lib/postgresql/data
+  #     - ./docker/backend/postgresql/init:/docker-entrypoint-initdb.d
+  #     - ./docker/backend/postgresql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
   cris-web-server:
     build:
       context: ./docker/backend
       dockerfile: Dockerfile
     ports:
       - '8080:8080'  
-    depends_on:
-      - postgres
-    links:
-      - postgres
+      - '8983:8983'
+    volumes:
+      #- ./docker/backend/conf_files:/home/dspace/conf_files
+    # depends_on:
+    #   - postgres
+    # links:
+    #   - postgres
