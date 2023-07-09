@@ -10,3 +10,4 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
 	CREATE EXTENSION pgcrypto;
 EOSQL
 
+cp /docker-entrypoint-initdb.d/pg_hba.conf /var/lib/postgresql/data/
