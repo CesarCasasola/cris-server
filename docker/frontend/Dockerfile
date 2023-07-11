@@ -26,7 +26,7 @@ RUN mkdir /dspace-ui-deploy/config
 # RUN cp /dspace-angular/config/config.example.yml /dspace-ui-deploy/config/config.prod.yml
 
 COPY ./conf_files/config.prod.yml /dspace-ui-deploy/config/
-COPY ./conf_files/dspace_ui.json   /dspace-ui-deploy/
+COPY ./conf_files/dspace-ui.json   /dspace-ui-deploy/
 
 
 EXPOSE 4000
