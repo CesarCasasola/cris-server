@@ -1,0 +1,33 @@
+✔ Server application bundle generation complete.
+
+<--- Last few GCs --->
+
+[299:0x5e907b0]   861460 ms: Mark-sweep 1978.6 (2088.0) -> 1972.3 (2089.8) MB, 820.7 / 0.2 ms  (average mu = 0.302, current mu = 0.046) allocation failure scavenge might not succeed
+[299:0x5e907b0]   862729 ms: Mark-sweep 1980.5 (2090.1) -> 1973.9 (2107.2) MB, 1231.4 / 0.1 ms  (average mu = 0.189, current mu = 0.030) allocation failure scavenge might not succeed
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+ 1: 0xb06730 node::Abort() [ng run dspace-angular:server:production]
+ 2: 0xa1b6d0  [ng run dspace-angular:server:production]
+ 3: 0xce1dd0 v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [ng run dspace-angular:server:production]
+ 4: 0xce2177 v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [ng run dspace-angular:server:production]
+ 5: 0xe997e5  [ng run dspace-angular:server:production]
+ 6: 0xea94ad v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [ng run dspace-angular:server:production]
+ 7: 0xeac1ae v8::internal::Heap::AllocateRawWithRetryOrFailSlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment) [ng run dspace-angular:server:production]
+ 8: 0xe6d422 v8::internal::Factory::AllocateRaw(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [ng run dspace-angular:server:production]
+ 9: 0xe67d3c v8::internal::FactoryBase<v8::internal::Factory>::AllocateRawArray(int, v8::internal::AllocationType) [ng run dspace-angular:server:production]
+10: 0xe67e15 v8::internal::FactoryBase<v8::internal::Factory>::NewFixedArrayWithFiller(v8::internal::Handle<v8::internal::Map>, int, v8::internal::Handle<v8::internal::Oddball>, v8::internal::AllocationType) [ng run dspace-angular:server:production]
+11: 0x10d069e v8::internal::MaybeHandle<v8::internal::OrderedHashMap> v8::internal::OrderedHashTable<v8::internal::OrderedHashMap, 2>::Allocate<v8::internal::Isolate>(v8::internal::Isolate*, int, v8::internal::AllocationType) [ng run dspace-angular:server:production]
+12: 0x10d0753 v8::internal::MaybeHandle<v8::internal::OrderedHashMap> v8::internal::OrderedHashTable<v8::internal::OrderedHashMap, 2>::Rehash<v8::internal::Isolate>(v8::internal::Isolate*, v8::internal::Handle<v8::internal::OrderedHashMap>, int) [ng run dspace-angular:server:production]
+13: 0x11dc885 v8::internal::Runtime_MapGrow(int, unsigned long*, v8::internal::Isolate*) [ng run dspace-angular:server:production]
+14: 0x15da0d9  [ng run dspace-angular:server:production]
+Aborted
+error Command failed with exit code 134.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+error Command failed with exit code 134.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+
+# grep MemTotal /proc/meminfo
+MemTotal:        6071404 kBd
