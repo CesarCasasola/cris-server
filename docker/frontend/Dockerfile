@@ -16,19 +16,23 @@ RUN mkdir /home/conf_files
 RUN git clone https://github.com/4Science/dspace-angular.git --branch dspace-cris-7
 #Instalación de dependencias
 RUN cd dspace-angular && yarn install
-#Compilación de angular para produccion llegó a requerir > 6GB
-# RUN cd /dspace-angular && yarn build:prod
+#Compilación de angular para produccion llegó a requerir > 5GB RAM
+RUN cd /dspace-angular && yarn build:prod 
 #Ubicando el código en directorio de despliegue (/dspace-ui-deploy)
 RUN mkdir /dspace-ui-deploy
-# RUN cp -R dspace-angular/dist/ /dspace-ui-deploy
+RUN cp -R /dspace-angular/dist/ /dspace-ui-deploy
 #Directorio y rchivo de configuración
 RUN mkdir /dspace-ui-deploy/config
-# RUN cp /dspace-angular/config/config.example.yml /dspace-ui-deploy/config/config.prod.yml
 
 COPY ./conf_files/config.prod.yml /dspace-ui-deploy/config/
 COPY ./conf_files/dspace-ui.json   /dspace-ui-deploy/
+COPY ./conf_files/package.json /dspace-angular/
 
+
+COPY ./init/init.sh /home/conf_files/
 
 EXPOSE 4000
-CMD ["tail", "-f", "/dev/null"]
-# CMD ["pm2", "start", "/dspace-ui-deploy/dspace_ui.json"]
+
+CMD ["bash", "/home/conf_files/init.sh"]
+# CMD ["tail", "-f", "/dev/null"]
+# CMD ["pm2", "start", "/dspace-ui-deploy/dspace-ui.json"]
