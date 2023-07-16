@@ -28,11 +28,8 @@ COPY ./conf_files/config.prod.yml /dspace-ui-deploy/config/
 COPY ./conf_files/dspace-ui.json   /dspace-ui-deploy/
 COPY ./conf_files/package.json /dspace-angular/
 
-
-COPY ./init/init.sh /home/conf_files/
-
 EXPOSE 4000
 
-CMD ["bash", "/home/conf_files/init.sh"]
+CMD ["bash", "/home/conf_files/init/init.sh"]
 # CMD ["tail", "-f", "/dev/null"]
 # CMD ["pm2", "start", "/dspace-ui-deploy/dspace-ui.json"]
