@@ -14,10 +14,10 @@ if [ -z "$(ls -A /dspace)" ]; then
      echo -e 'rdsp4c3\n' | su root -c 'cp -r /dspace/solr/* /var/solr/data/'
      echo -e 'rdsp4c3\n' | su root -c 'chown -R solr:solr /var/solr/data/'
      echo -e 'rdsp4c3\n' | su root -c 'service solr restart'
-     #Arrancando tomcat para hacer el primer deploy
-     /home/dspace/tomcat9/bin/catalina.sh run
-else
-     #Si la instalación se realizó, se hace un inicio simple de Tomcat
-     /home/dspace/tomcat9/bin/startup.sh
+     
 fi
+
+#Arrancando tomcat para hacer el primer deploy
+/home/dspace/tomcat9/bin/catalina.sh run
+
 
