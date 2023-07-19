@@ -35,3 +35,11 @@ services:
       - cris-web-server
     links:
       - cris-web-server
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=cris@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=crispostgres
+    ports:
+      - 5050:80
+  

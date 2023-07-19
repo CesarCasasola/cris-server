@@ -16,6 +16,10 @@ RUN mkdir /home/conf_files
 RUN git clone https://github.com/4Science/dspace-angular.git --branch dspace-cris-7
 #Instalación de dependencias
 RUN cd dspace-angular && yarn install
+
+#Para no exceder la memoria de node
+ENV NODE_OPTIONS="--max-old-space-size=6000"
+
 #Compilación de angular para produccion llegó a requerir > 5GB RAM
 RUN cd /dspace-angular && yarn build:prod 
 #Ubicando el código en directorio de despliegue (/dspace-ui-deploy)
