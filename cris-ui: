@@ -1,0 +1,12 @@
+ cris-ui:
+    build:
+      context: ./docker/frontend
+      dockerfile: Dockerfile
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./docker/frontend/conf_files:/home/conf_files
+    depends_on:
+      - cris-web-server
+    links:
+      - cris-web-server

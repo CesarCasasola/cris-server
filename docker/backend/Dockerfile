@@ -28,11 +28,6 @@ RUN usermod -aG sudo dspace
 
 #Instalar apache Ant 1.10.x
 RUN apt-get install -y ant
-# RUN cd /tmp && wget https://dlcdn.apache.org/ant/binaries/apache-ant-1.10.13-bin.tar.gz
-# RUN tar -xf /tmp/apache-ant-1.10.13-bin.tar.gz -C /usr/local
-# RUN ln -s /usr/local/apache-ant-1.10.13/ /usr/local/ant
-# ENV ANT_HOME /usr/local/ant
-# ENV PATH /usr/local/ant/bin:${PATH}
 
 #Instalar Solr 8.
 USER dspace
@@ -42,10 +37,6 @@ USER root
 RUN cd /home/dspace && ./solr-8.11.2/bin/install_solr_service.sh solr-8.11.2.tgz -f
 EXPOSE 8983
 RUN service solr start
-#IMPORTANTE, por alguna razon el servidor solr se detiene al arrancar el contenedor
-# Haciendo un directorio para enlazar con el servicio solr
-# USER dspace
-# RUN mkdir /home/dspace/solr-data
 
 #Instalar Apache Tomcat
 USER dspace
@@ -79,10 +70,55 @@ COPY ./conf_files/dspace/local.cfg /home/dspace/dspace-cris/dspace/config/
 #Compilar con maven
 RUN cd /home/dspace/dspace-cris/ && mvn package
 
-
 USER dspace
 COPY ./init/init-install.sh /home/dspace/
-# #Ejecucion de tomcat como proceso principal de la imagen
-# CMD ["/home/dspace/tomcat9/bin/catalina.sh", "run"]
-# CMD ["tail", "-f", "/dev/null"]
+
+# Instalar Node.js y otras dependencias para el frontend
+USER root
+# Instalar Node.js y npm en la versión 14.x
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
+RUN npm install --global pm2
+
+
+
+# Directorio provisional para guardar archivos de configuración
+RUN mkdir /home/conf_files
+
+# Instalación de DSpace Angular
+# Obtención del código fuente
+RUN git clone https://github.com/4Science/dspace-angular.git --branch dspace-cris-7
+
+RUN apt-get update && apt-get install -y yarn
+
+RUN apt-get update && apt-get install -y gnupg
+RUN apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y yarn
+
+# Instalación de dependencias
+RUN cd dspace-angular && yarn install
+#Compilación de angular para produccion llegó a requerir > 5GB RAM
+ENV NODE_OPTIONS="--max-old-space-size=9216"
+
+# Compilación de Angular para producción
+RUN cd /dspace-angular && yarn build:prod
+
+# Ubicando el código en directorio de despliegue (/dspace-ui-deploy)
+RUN mkdir /dspace-ui-deploy
+RUN cp -R /dspace-angular/dist/ /dspace-ui-deploy
+
+# Directorio y archivo de configuración
+RUN mkdir /dspace-ui-deploy/config
+COPY ./conf_files/config.prod.yml /dspace-ui-deploy/config/
+COPY ./conf_files/dspace-ui.json /dspace-ui-deploy/
+COPY ./conf_files/package.json /dspace-angular/
+
+# Asegurarse de que el usuario dspace tenga permisos sobre los archivos del frontend
+USER root
+RUN chown -R dspace:dspace /dspace-ui-deploy
+
+EXPOSE 4000
+
 CMD ["bash", "/home/dspace/init-install.sh"]
+

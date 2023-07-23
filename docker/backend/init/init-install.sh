@@ -16,6 +16,12 @@ if [ -z "$(ls -A /dspace)" ]; then
      echo -e 'rdsp4c3\n' | su root -c 'service solr restart'
      
 fi
+#Si el directorio de despliegue no está vacío, se arranca con pm2
+if [ -n "$(ls -A /dspace-ui-deploy/dist)" ]; then
+     
+     #Arrancando la aplicación ui con pm2
+     pm2 start /dspace-ui-deploy/dspace-ui.json
+fi
 
 #Arrancando tomcat para hacer el primer deploy
 /home/dspace/tomcat9/bin/catalina.sh run
