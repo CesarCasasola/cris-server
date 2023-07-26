@@ -24,4 +24,10 @@ services:
       - postgres
     links:
       - postgres
- 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=cris@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=crispostgres
+    ports:
+      - 5050:80
