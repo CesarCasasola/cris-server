@@ -40,9 +40,9 @@ RUN service solr start
 
 #Instalar Apache Tomcat
 USER dspace
-RUN cd /home/dspace && wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.76/bin/apache-tomcat-9.0.76.tar.gz
-RUN cd /home/dspace && tar -xzvf /home/dspace/apache-tomcat-9.0.76.tar.gz
-RUN mv /home/dspace/apache-tomcat-9.0.76 /home/dspace/tomcat9
+RUN cd /home/dspace && wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.78/bin/apache-tomcat-9.0.78.tar.gz
+RUN cd /home/dspace && tar -xzvf /home/dspace/apache-tomcat-9.0.78.tar.gz
+RUN mv /home/dspace/apache-tomcat-9.0.78 /home/dspace/tomcat9
 #Configurando variables de entrono para CATALINA_ENV
 USER root
 COPY ./conf_files/tomcat/setenv.sh /home/dspace/tomcat9/bin
