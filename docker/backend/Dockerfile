@@ -21,7 +21,7 @@ RUN export JAVA_HOME
 RUN apt-get install -y maven
 
 #Cambio de contrasenia para root
-RUN echo 'root:rdsp4c3' | chpasswd 
+RUN echo 'root:rdsp4c3' | chpasswd
 #Creacion de grupo y usario dspace
 RUN useradd -m -U -s /bin/bash dspace
 RUN usermod -aG sudo dspace
@@ -60,11 +60,12 @@ EXPOSE 8080
 # #Creando directorio de instalacion de dspace
 USER root
 RUN mkdir /dspace
-RUN chown dspace:dspace /dspace 
+RUN chown dspace:dspace /dspace
 
 #Descarga de código fuente
 USER dspace
 RUN git clone https://github.com/4Science/DSpace.git --branch dspace-cris-7 /home/dspace/dspace-cris/
+RUN cd /home/dspace/dspace-cris/ && git checkout dba77647f41555d1b67c1c70428489a44ccb2f5d
 #Copiar archivo de configuración
 COPY ./conf_files/dspace/local.cfg /home/dspace/dspace-cris/dspace/config/
 #Compilar con maven
