@@ -28,11 +28,6 @@ RUN usermod -aG sudo dspace
 
 #Instalar apache Ant 1.10.x
 RUN apt-get install -y ant
-# RUN cd /tmp && wget https://dlcdn.apache.org/ant/binaries/apache-ant-1.10.13-bin.tar.gz
-# RUN tar -xf /tmp/apache-ant-1.10.13-bin.tar.gz -C /usr/local
-# RUN ln -s /usr/local/apache-ant-1.10.13/ /usr/local/ant
-# ENV ANT_HOME /usr/local/ant
-# ENV PATH /usr/local/ant/bin:${PATH}
 
 #Instalar Solr 8.
 USER dspace
@@ -42,16 +37,12 @@ USER root
 RUN cd /home/dspace && ./solr-8.11.2/bin/install_solr_service.sh solr-8.11.2.tgz -f
 EXPOSE 8983
 RUN service solr start
-#IMPORTANTE, por alguna razon el servidor solr se detiene al arrancar el contenedor
-# Haciendo un directorio para enlazar con el servicio solr
-# USER dspace
-# RUN mkdir /home/dspace/solr-data
 
 #Instalar Apache Tomcat
 USER dspace
-RUN cd /home/dspace && wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.76/bin/apache-tomcat-9.0.76.tar.gz
-RUN cd /home/dspace && tar -xzvf /home/dspace/apache-tomcat-9.0.76.tar.gz
-RUN mv /home/dspace/apache-tomcat-9.0.76 /home/dspace/tomcat9
+RUN cd /home/dspace && wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.78/bin/apache-tomcat-9.0.78.tar.gz
+RUN cd /home/dspace && tar -xzvf /home/dspace/apache-tomcat-9.0.78.tar.gz
+RUN mv /home/dspace/apache-tomcat-9.0.78 /home/dspace/tomcat9
 #Configurando variables de entrono para CATALINA_ENV
 USER root
 COPY ./conf_files/tomcat/setenv.sh /home/dspace/tomcat9/bin
@@ -79,9 +70,9 @@ COPY ./conf_files/dspace/local.cfg /home/dspace/dspace-cris/dspace/config/
 #Compilar con maven
 RUN cd /home/dspace/dspace-cris/ && mvn package
 
-
 USER dspace
 COPY ./init/init-install.sh /home/dspace/
+
 # #Ejecucion de tomcat como proceso principal de la imagen
 # CMD ["/home/dspace/tomcat9/bin/catalina.sh", "run"]
 # CMD ["tail", "-f", "/dev/null"]
