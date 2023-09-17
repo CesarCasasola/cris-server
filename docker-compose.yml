@@ -16,22 +16,21 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8080:8080'  
-      - '8983:8983'
     # volumes:
     #   - ./docker/backend/solr/solr-data:/home/dspace/solr-data
     depends_on:
       - postgres
     links:
       - postgres
-  cris-ui:
-    build:
-      context: ./docker/frontend
-      dockerfile: Dockerfile
-    ports:
-      - '4000:4000'
-    volumes:
-      - ./docker/frontend/conf_files:/home/conf_files
-    depends_on:
-      - cris-web-server
-    links:
-      - cris-web-server
+  # cris-ui:
+  #   build:
+  #     context: ./docker/frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '4000:4000'
+  #   volumes:
+  #     - ./docker/frontend/conf_files:/home/conf_files
+  #   depends_on:
+  #     - cris-web-server
+  #   links:
+  #     - cris-web-server
