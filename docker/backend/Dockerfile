@@ -65,10 +65,11 @@ RUN chown dspace:dspace /dspace
 #Descarga de código fuente
 USER dspace
 RUN git clone https://github.com/4Science/DSpace.git --branch dspace-cris-7 /home/dspace/dspace-cris/
+RUN cd /home/dspace/dspace-cris/ && git checkout dba77647f41555d1b67c1c70428489a44ccb2f5d
 #Copiar archivo de configuración
 COPY ./conf_files/dspace/local.cfg /home/dspace/dspace-cris/dspace/config/
 #Compilar con maven
-RUN cd /home/dspace/dspace-cris/ && mvn package
+RUN cd /home/dspace/dspace-cris/ && mvn package
 
 USER dspace
 COPY ./init/init-install.sh /home/dspace/
@@ -100,7 +101,7 @@ RUN apt-get update && apt-get install -y yarn
 RUN cd dspace-angular && yarn install
 #Compilación de angular para produccion llegó a requerir > 5GB RAM
 ENV NODE_OPTIONS="--max-old-space-size=4096"
-#COPY ./conf_files/package.json /dspace-angular/
+COPY ./conf_files/package.json /dspace-angular/
 
 # Compilación de Angular para producción
 RUN cd /dspace-angular && yarn build:prod
@@ -113,7 +114,7 @@ RUN cp -R /dspace-angular/dist/ /dspace-ui-deploy
 RUN mkdir /dspace-ui-deploy/config
 COPY ./conf_files/config.prod.yml /dspace-ui-deploy/config/
 COPY ./conf_files/dspace-ui.json /dspace-ui-deploy/
-COPY ./conf_files/package.json /dspace-angular/
+#COPY ./conf_files/package.json /dspace-angular/
 
 # Asegurarse de que el usuario dspace tenga permisos sobre los archivos del frontend
 USER root
